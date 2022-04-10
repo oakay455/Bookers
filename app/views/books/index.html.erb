@@ -1,14 +1,52 @@
 <h1>Books</h1>
-<% @books.each do |book| %>
 
-<h4>Title</h4>
-<span><%= book.title %></span>
+<body>
+  <table>
+     <thead>
+         <tr>
+          <th>Title</th>
+          <th>Body</th>
+         </tr>
+     </thead>
+     <tbody>
+         <% @books.each do |book| %>
+         <tr>
+        　<td><%= book.title %></td>
+          <td><%= book.body %></td>
+          <td><%= link_to "Show", book_path(book.id) %></td>
+          <td><%= link_to 'Edit', edit_book_path(book.id) %></td>
+          <td><%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %></td>
+         </tr>
+         <% end %>
+     </tbody>
+ </table>
 
-<h4>Body</h4>
-<span><%= book.body %></span>
+<div class="new-book">
+<h2>New book</h2>
+<% if @book.errors.any? %>
+ <%= @book.errors.count %>errors prohibited this book from being saved:
+ <ul>
+  <% @book.errors.full_messages.each do |message| %>
+   <li><%= message %></li>
+  <% end %> 
+ </ul>
+  <% end %>
+  
+<%= form_with model:@book, method: :post do |f| %>
 
-<%= link_to "Show", book_path(@book.id) %>
-<%= link_to "Edit", edit_book_path(@book.id) %>
-<%= link_to "Destroy", books_path(@book.id), method: :delete, "data-confirm" => "Are you sure?" %>
-
+<div class="new-book-text">
+ <div class="new-book-box">
+  <p>Title</p>
+  <%= f.text_field :title %>
+ </div>
+<div class="new-book-text">
+ <div class="new-book-box">
+ <p>Body</p>
+ <%= f.text_area :body %>
+</div>
+</div>
+<p><%= f.submit 'Create Book' %></p>
 <% end %>
+</div>
+
+</body>
